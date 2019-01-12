@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from "@angular/router";
+import { User } from "../models/user";
 
+import { RoomService } from "../_services/room.service";
 
 @Component({
   selector: 'app-home',
@@ -9,22 +11,27 @@ import { Router } from "@angular/router";
 })
 export class HomeComponent implements OnInit {
 
-  username : string;
-  password : string;
+  username : string = null;
+  password : string = null;
 
   loginFailed:boolean = false;
 
   constructor(
-    readonly router : Router
+    readonly router : Router,
+    readonly room : RoomService
   ) { }
 
   ngOnInit() {
   }
 
   login(){
-    if(this.username == 'hello' && this.password == 'hello'){
-      //show logged in
-      alert("hi");
+    if(this.username && this.password){
+      let user = new User();
+      user.username = this.username;
+      user.password = this.password;
+      this.room.findUser(user).subscribe(data => {
+        console.log(data);
+      });
       this.router.navigate(['/book-a-room']);
     }else{
       //error

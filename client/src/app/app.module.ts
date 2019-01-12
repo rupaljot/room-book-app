@@ -10,6 +10,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 
+import { BaseService } from "./_services/base.service";
+import { RoomService } from "./_services/room.service";
+
 import { 
   MatButtonModule, 
   MatCheckboxModule,
@@ -24,13 +27,15 @@ import {
 } from '@angular/material';
 import { BookRoomComponent } from './book-room/book-room.component';
 import { MyBookingsComponent } from './my-bookings/my-bookings.component';
+import { RegisterComponent } from './register/register.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     BookRoomComponent,
-    MyBookingsComponent
+    MyBookingsComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
@@ -49,7 +54,10 @@ import { MyBookingsComponent } from './my-bookings/my-bookings.component';
     MatDatepickerModule,
     MatNativeDateModule
   ],
-  providers: [],
+  providers: [
+    BaseService,
+    RoomService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
