@@ -1,0 +1,32 @@
+<div class="row" style="margin-top: 10%;">
+  <div class="col-md-3"></div>
+  <div class="col-md-6" style="text-align: center;">
+    
+    <mat-card class="login-card">
+      <mat-card-header>
+        <mat-card-title>Login</mat-card-title>
+        <mat-card-subtitle>Sign-up</mat-card-subtitle>
+      </mat-card-header>
+      <div *ngIf="loginFailed" style="color:red;">Authentication Failed. Please try again.</div>
+      <mat-card-content>
+        <form>
+          
+          <mat-form-field style="width: 90%">
+            <input matInput placeholder="Username" name="username" [(ngModel)]="username">
+          </mat-form-field>
+          <br>
+          <mat-form-field style="width: 90%">
+            <input type="password" matInput placeholder="Password" name="password" [(ngModel)]="password">
+          </mat-form-field>
+
+        </form>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-button (click)="login()">Submit</button>
+        <button mat-button (click)="reset()">Reset</button>
+      </mat-card-actions>
+    </mat-card>
+
+  </div>
+  <div class="col-md-3"></div>
+</div>
