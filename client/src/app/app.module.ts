@@ -12,6 +12,7 @@ import { HomeComponent } from './home/home.component';
 
 import { BaseService } from "./_services/base.service";
 import { RoomService } from "./_services/room.service";
+import { SharedService } from "./_services/shared.service";
 
 import { 
   MatButtonModule, 
@@ -56,6 +57,7 @@ import { RegisterComponent } from './register/register.component';
   ],
   providers: [
     BaseService,
+    SharedService,
     RoomService
   ],
   bootstrap: [AppComponent]

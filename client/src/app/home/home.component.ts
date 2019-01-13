@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from "@angular/router";
 import { User } from "../models/user";
+import { Seats } from "../models/seats";
+import { Response } from "../models/login-response";
 
 import { RoomService } from "../_services/room.service";
 
@@ -25,14 +27,19 @@ export class HomeComponent implements OnInit {
   }
 
   login(){
-    if(this.username && this.password){
+    if(this.username && this.password && this.username !='admin' && this.password !='admin'){
       let user = new User();
       user.username = this.username;
       user.password = this.password;
-      this.room.findUser(user).subscribe(data => {
-        console.log(data);
+      this.room.findUser(user).subscribe((data : Response) => {
+        this.room.storeUserData(data.token, data.user);
+        this.router.navigate(['/book-a-room']);
       });
-      this.router.navigate(['/book-a-room']);
+      
+    }else if (this.username =='admin' && this.password =='admin'){
+      
+
+      
     }else{
       //error
       this.loginFailed = true;

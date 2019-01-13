@@ -1,7 +1,4 @@
-export class Seats  {
-    roomId: Number;
-    seatsBooked: Number;
-  };
+import { Seats } from "./seats";
 
 export class User  {
     username: string;

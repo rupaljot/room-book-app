@@ -34,17 +34,26 @@ module.exports.getUserById = function(id, callback) {
   User.findById(id, callback);
 }
 
-module.exports.getUserByUsername = function(user, callback) {
-  const query = {
-    $and: [
-      {username: user.username}, {password: user.password}
-   ]
-  }
+module.exports.getUserBookedRooms = function(user, callback) {
+  User.findOne(
+      {username: user.username}
+   ,
+   callback);
+}
+
+module.exports.getUserByUsername = function(username, callback) {
+  const query = {username: username}
   User.findOne(query, callback);
 }
 
 module.exports.addUser = function(newUser, callback) {
-  newUser.save(callback);
+  bcrypt.genSalt(10, (err, salt) => {
+    bcrypt.hash(newUser.password, salt, (err, hash) => {
+      if(err) throw err;
+      newUser.password = hash;
+      newUser.save(callback);
+    });
+  });
 }
 
 module.exports.comparePassword = function(candidatePassword, hash, callback) {
@@ -53,3 +62,4 @@ module.exports.comparePassword = function(candidatePassword, hash, callback) {
     callback(null, isMatch);
   });
 }
+

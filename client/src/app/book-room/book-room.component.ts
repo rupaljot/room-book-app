@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { RoomService } from "../_services/room.service";
+import { SharedService } from "../_services/shared.service";
 
 @Component({
   selector: 'app-book-room',
@@ -14,9 +16,16 @@ export class BookRoomComponent implements OnInit {
 
   selectedDate : Date;
 
-  constructor() { }
+  constructor(
+    private readonly room: RoomService,
+    public shared: SharedService
+  ) { }
 
   ngOnInit() {
+    let user = this.shared.user;
+    this.room.getRoomsBookedByTheUser(user).subscribe(data => {
+      console.log(data);
+    });
   }
 
   searchForData(){
