@@ -4,6 +4,9 @@ import { SharedService } from "./shared.service";
 
 import { User } from "../models/user";
 
+import { Seats } from "../models/seats";
+import { BookingQuery } from '../models/booking-query';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -25,7 +28,7 @@ export class RoomService {
   }
 
   getRoomsBookedByTheUser(user: User){
-    return this.base.getMethod('work/userData');
+    return this.base.postMethod(user, 'work/userData');
   }
 
   storeUserData(token, user) {
@@ -35,4 +38,25 @@ export class RoomService {
     this.shared.user = user;
   }
 
+  registerRoom(seats : Seats){
+    return this.base.postMethod(seats, 'work/admin');
+  }
+
+  checkRoomId(id: string){
+    let seats = new Seats();
+    seats.roomId = id;
+    return this.base.postMethod(seats, 'work/seatCheck');
+  }
+
+  getRoomsAvailable(seats: Seats){
+    return this.base.postMethod(seats, 'work/rooms');
+  }
+
+  bookASlot(bookingQuery: BookingQuery){
+    return this.base.postMethod(bookingQuery, 'work/book');
+  }
+  
+  editDetails(room){
+    return this.base.postMethod(room, 'work/editDetails');
+  }
 }

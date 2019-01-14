@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const config = require('../config/database');
 
-const Seats = mongoose.Schema ({
+const Seats = {
   roomId: {
     type: Number,
     required: true
@@ -10,8 +10,17 @@ const Seats = mongoose.Schema ({
   seatsBooked: {
     type: Number,
     required:true
+  },
+  dateOfBooking: {
+    type: Date
+  },
+  dateForBooking: {
+    type: Date
+  },
+  imageId: {
+    type: String
   }
-});
+};
 
 // User Schema
 const UserSchema = mongoose.Schema ({
@@ -20,7 +29,7 @@ const UserSchema = mongoose.Schema ({
     required: true
   },
   noOfSeatsBooked: {
-    type: [Seats]
+    type: Array()
   },
   password: {
     type: String,
@@ -36,8 +45,7 @@ module.exports.getUserById = function(id, callback) {
 
 module.exports.getUserBookedRooms = function(user, callback) {
   User.findOne(
-      {username: user.username}
-   ,
+      {username: user.username},
    callback);
 }
 
@@ -54,6 +62,45 @@ module.exports.addUser = function(newUser, callback) {
       newUser.save(callback);
     });
   });
+}
+
+module.exports.editUserBooking = function(user, query, callback){
+  const queryToFindUser = {
+    username : user.username
+  }
+  // User.findOne(queryToFindUser, (err, data)=>{
+  //   if(data){
+  //     User.findOne({'noOfSeatsBooked.roomId': query.roomID},
+    //   User.update({'noOfSeatsBooked.roomId': query.roomID}, {'$set': {
+    //     'noOfSeatsBooked.$.dateForBooking': query.dateForBooking,
+    //     'noOfSeatsBooked.$.seatsBooked': query.seatsBooked
+    // }},
+    //     callback
+    //   );
+    // }
+  // })
+  User.updateOne({'username' : user.username, 'noOfSeatsBooked.dateForBooking' : query.oldDateForBooking},
+    { $set: { "noOfSeatsBooked.$.dateForBooking" : query.dateForBooking, "noOfSeatsBooked.$.seatsBooked" : query.seatsBooked} }, callback
+  )
+  
+}
+
+module.exports.updateUserBooking = function(user, query, callback){
+  const queryToFindUser = {
+    username : user.username
+  }
+  User.findOne(queryToFindUser, (err, data)=>{
+    if(data){
+      User.findByIdAndUpdate(data._id,
+        {
+          "$push": { "noOfSeatsBooked": query }
+        },
+        { "new": true, "upsert": true },
+        callback
+      );
+    }
+  })
+  
 }
 
 module.exports.comparePassword = function(candidatePassword, hash, callback) {

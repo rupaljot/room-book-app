@@ -13,6 +13,7 @@ import { HomeComponent } from './home/home.component';
 import { BaseService } from "./_services/base.service";
 import { RoomService } from "./_services/room.service";
 import { SharedService } from "./_services/shared.service";
+import {MAT_DIALOG_DEFAULT_OPTIONS} from '@angular/material';
 
 import { 
   MatButtonModule, 
@@ -24,19 +25,23 @@ import {
   MatCardModule,
   MatFormFieldModule,
   MatDatepickerModule,
-  MatNativeDateModule
+  MatNativeDateModule,
+  MatDialogModule
 } from '@angular/material';
 import { BookRoomComponent } from './book-room/book-room.component';
-import { MyBookingsComponent } from './my-bookings/my-bookings.component';
 import { RegisterComponent } from './register/register.component';
+import { AdminComponent } from './admin/admin.component';
+import { MyBookingComponent, DialogOverviewExampleDialog } from './my-booking/my-booking.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     BookRoomComponent,
-    MyBookingsComponent,
-    RegisterComponent
+    RegisterComponent,
+    AdminComponent,
+    MyBookingComponent,
+    DialogOverviewExampleDialog
   ],
   imports: [
     BrowserModule,
@@ -53,13 +58,16 @@ import { RegisterComponent } from './register/register.component';
     BrowserAnimationsModule,  
     MatCardModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatDialogModule
   ],
   providers: [
     BaseService,
     SharedService,
-    RoomService
+    RoomService,
+    {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}}
   ],
+  entryComponents: [DialogOverviewExampleDialog],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

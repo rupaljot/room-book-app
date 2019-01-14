@@ -12,35 +12,37 @@ const RoomSchema = mongoose.Schema ({
     required: true
   },
   availableSeats: {
-    type: String,
-    required: true
-  },
-  password: {
-    type: String,
+    type: Number,
     required: true
   }
 });
 
-const User = module.exports = mongoose.model('Room', RoomSchema);
+const Room = module.exports = mongoose.model('Room', RoomSchema);
 
-// module.exports.getUserById = function(id, callback) {
-//   User.findById(id, callback);
-// }
+module.exports.getRooms = function(room, callback) {
+  query = { 'availableSeats' :{
+    $gte : room.availableSeats
+  }};
+  Room.find(query, callback);
+}
 
-// module.exports.getUserByUsername = function(username, callback) {
-//   const query = {username: username}
-//   User.findOne(query, callback);
-// }
+module.exports.updateRoom = function(room, callback) {
+  query = {
+    roomId : room.roomId
+  }
+  Room.find(query, (err, originalroom)=>{
+    if(originalroom.length==1){
+      originalroom[0].availableSeats = originalroom[0].availableSeats - room.availableSeats;
+      
+      if(originalroom[0].availableSeats >= 0){
+        originalroom[0].save(callback);
+      }else{
+        throw err
+      }
+    }
+  })
+}
 
-// module.exports.addUser = function(newUser, callback) {
-//   bcrypt.genSalt(10, (err, salt) => {
-//     bcrypt.hash(newUser.password, salt, (err, hash) => {
-//       if(err) throw err;
-//       newUser.password = hash;
-//       newUser.save(callback);
-//     });
-//   });
-// }
 
 // module.exports.comparePassword = function(candidatePassword, hash, callback) {
 //   bcrypt.compare(candidatePassword, hash, (err, isMatch) => {

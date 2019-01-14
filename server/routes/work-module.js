@@ -4,6 +4,8 @@ const passport = require('passport');
 const jwt = require('jsonwebtoken');
 const config = require('../config/database');
 const User = require('../models/user');
+const Room = require('../models/room');
+
 
 
 // Register
@@ -83,22 +85,111 @@ router.post('/getUser', (req, res, next) => {
 });
 
 // Profile
-router.get('/userData', passport.authenticate('jwt', {session:false}), (req, res, next) => {
-  User.getUserBookedRooms(req.user, (err, user) => {
+router.post('/userData', (req, res, next) => {
+  let user = new User({
+    username : req.body.username
+  }) ;
+  User.getUserBookedRooms(user, (err, user) => {
 
     if(err){
       res.json({failure:'Error in data querying'});
     }
     if(user){
-      let resUser = new User({
-        username: user.username,
-        noOfSeatsBooked: user.noOfSeatsBooked,
-        password: null
-      })
-      res.json(resUser);
+      res.json(user);
     }
   })
   
 });
+
+router.post('/rooms', (req, res, next) => {4
+  let seat = new Room({
+    availableSeats : req.body.seatsBooked
+  });
+  Room.getRooms(seat, (err, room) => {
+
+    if(err){
+      res.json([]);
+    }
+    if(room){
+      res.json(room);
+    }
+  })
+  
+});
+
+router.post('/book', (req, res, next) => {
+  let room = new Room({
+    roomId : req.body.roomId,
+    availableSeats : req.body.seatsBooked,
+    imageId : req.body.imageId
+  });
+
+  let user = new User({
+    username : req.body.user.username
+  })
+
+  let query = {
+    roomId: req.body.roomId,
+    seatsBooked: req.body.seatsBooked,
+    imageId: req.body.imageId,
+    availableSeats: req.body.availableSeats,
+    dateOfBooking: req.body.dateOfBooking,
+    dateForBooking: req.body.dateForBooking
+  }
+
+
+  Room.updateRoom(room, (err, room)=>{
+    if(err){
+      res.json({success : false})
+    }else{
+      User.updateUserBooking(user, query, (err, user) =>{
+        if(err){
+          res.json({success : false});
+        }else{
+          res.json(user);
+        }
+      })
+    }
+  });
+});
+
+
+router.post('/editDetails', (req, res, next) => {
+  let room = new Room({
+    roomId : req.body.roomId,
+    availableSeats : req.body.seatsBooked - req.body.oldSeats,
+    imageId : req.body.imageId
+  });
+
+  let user = new User({
+    username : req.body.user.username
+  })
+
+  let query = {
+    roomId: req.body.roomId,
+    seatsBooked: req.body.seatsBooked,
+    imageId: req.body.imageId,
+    availableSeats: req.body.availableSeats,
+    dateOfBooking: req.body.dateOfBooking,
+    dateForBooking: req.body.dateForBooking,
+    oldDateForBooking: req.body.oldDateForBooking
+  }
+
+
+  Room.updateRoom(room, (err, room)=>{
+    if(err){
+      res.json({success : false})
+    }else{
+      User.editUserBooking(user, query, (err, user) =>{
+        if(err){
+          res.json({success : false});
+        }else{
+          res.json(user);
+        }
+      })
+    }
+  });
+});
+
 
 module.exports = router;

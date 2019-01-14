@@ -37,9 +37,7 @@ export class HomeComponent implements OnInit {
       });
       
     }else if (this.username =='admin' && this.password =='admin'){
-      
-
-      
+      this.router.navigate(['/admin']);
     }else{
       //error
       this.loginFailed = true;

@@ -1,9 +1,12 @@
-export class Seats  {
+import { User } from "./user";
+
+export class BookingQuery {
     _id: string;
     roomId: string;
     seatsBooked: Number;
     imageId: string;
     availableSeats: Number;
     dateOfBooking: Date;
-    dateForBooking: DataCue;
-  };
+    dateForBooking: Date;
+    user: User;
+}

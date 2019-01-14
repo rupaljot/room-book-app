@@ -8,20 +8,22 @@
           <mat-card-content>
             <form>
               <div class="row" style="padding-left: 18px;">
-                <div class="col-md-5">
+                <div class="col-md-4">
                     <mat-form-field style="width: 100%" >
                         <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker" name="selectedDate" [(ngModel)]="selectedDate" placeholder="Choose a date">
                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                         <mat-datepicker #picker></mat-datepicker>
                     </mat-form-field>
                 </div>
-                <div class="col-md-5">
+                <div class="col-md-4">
                     <mat-form-field style="width: 100%">
-                      <input type="number" matInput placeholder="Password" name="numberOfSeats" [(ngModel)]="numberOfSeats">
+                      <input type="number" matInput placeholder="No of required seats" name="queriedSeats" [(ngModel)]="queriedSeats">
                     </mat-form-field>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-4" style="text-align: center">
                     <button mat-raised-button (click)="searchForData()">Search</button>
+                    &nbsp;&nbsp;
+                    <button mat-raised-button (click)="myBooking()">My Bookings</button>
                 </div>
               </div>
             </form>
@@ -34,27 +36,24 @@
 <br>
 <br>
 
-<div class="row">
-    <div class="col-md-1"></div>
-    <div class="col-md-10">
-        <mat-card class="example-card">
-          <mat-card-header>
-            <div mat-card-avatar class="example-header-image"></div>
-            <mat-card-title>Shiba Inu</mat-card-title>
-            <mat-card-subtitle>Dog Breed</mat-card-subtitle>
-          </mat-card-header>
-          <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
-          <mat-card-content>
-            <p>
-              The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.
-              A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was originally
-              bred for hunting.
-            </p>
-          </mat-card-content>
-          <mat-card-actions style="text-align: center">
-            <button mat-raised-button color="primary">Book</button>
-          </mat-card-actions>
-        </mat-card>
-    </div>
-    <div class="col-md-1"></div>
+
+  <div class="row" >
+      <div class="col-md-3" *ngFor="let seat of numberOfSeats">
+          
+            <mat-card class="example-card">
+              <mat-card-header>
+                <div mat-card-avatar class="example-header-image"></div>
+                <mat-card-title>{{seat.roomId}}</mat-card-title>
+                <mat-card-subtitle>Seats Available : {{seat.availableSeats}}</mat-card-subtitle>
+              </mat-card-header>
+              <img mat-card-image src="{{shared.imageEnum[seat.imageId]}}" alt="Photo of a Shiba Inu">
+              <mat-card-content>
+                
+              </mat-card-content>
+              <mat-card-actions style="text-align: center">
+                <button mat-raised-button color="primary" (click)="bookTheRoom(seat)">Book</button>
+              </mat-card-actions>
+            </mat-card>
+          
+      </div>
   </div>

@@ -10,5 +10,12 @@ export class SharedService {
   user: User;
   seats: Seats;
 
-  constructor() { }
+  imageEnum;
+
+  constructor() {
+    this.imageEnum ={
+      'image1' : './assets/img/image1.jpg',
+      'image2' : './assets/img/image2.jpg'
+    };
+   }
 }

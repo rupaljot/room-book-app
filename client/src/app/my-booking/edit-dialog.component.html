@@ -1,0 +1,15 @@
+<h1 mat-dialog-title>{{data.roomId}}</h1>
+<div mat-dialog-content>
+    <mat-form-field>
+            <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker" name="dateForBooking" [(ngModel)]="data.dateForBooking" placeholder="Choose a date">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field style="width: 100%">
+        <input type="number" matInput placeholder="No of required seats" name="seatsBooked" [(ngModel)]="data.seatsBooked">
+    </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Ok</button>
+</div>
