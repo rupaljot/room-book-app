@@ -2,3 +2,6 @@ use room-book;
 db.createCollection("rooms");
 db.rooms.insert({roomId:'1235', imageId: 'image2', availableSeats: 20 });
 db.rooms.insert({roomId:'1234', imageId: 'image1', availableSeats: 20 })
+
+
+(Note: for registering user, you can use the register functionality in the application)
